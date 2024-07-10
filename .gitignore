@@ -1,0 +1,14 @@
+.vscode/*
+.idea/*
+venv/*
+*.pyc
+builds/*.srec
+auth.txt
+pcb_serial_log.csv
+*.jpeg
+*.jpg
+*.png
+*.bmp
+!testcard.jpg
+station_global_params.py
+hardware_config.py
