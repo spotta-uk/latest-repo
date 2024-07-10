@@ -1,16 +1,36 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import git
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def check_and_update_repo(repo_path):
+    try:
+        # Open the repository
+        repo = git.Repo(repo_path)
+
+        # Check if the repository is dirty (i.e., has uncommitted changes)
+        if repo.is_dirty(untracked_files=True):
+            print(f"Repository at {repo_path} has uncommitted changes.")
+            return
+
+        # Fetch the latest changes from the remote
+        print(f"Fetching updates for the repository at {repo_path}...")
+        repo.remotes.origin.fetch()
+
+        # Compare local and remote commits
+        local_commit = repo.commit('master')
+        remote_commit = repo.remotes.origin.refs.master.commit
+
+        if local_commit == remote_commit:
+            print("The repository is up-to-date.")
+        else:
+            print("The repository is not up-to-date. Pulling the latest version...")
+            repo.remotes.origin.pull()
+            print("Repository has been updated.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    repo_path = './'
+    check_and_update_repo(repo_path)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
